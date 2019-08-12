@@ -84,7 +84,11 @@ namespace {
             fs.exceptions(fs.failbit | fs.badbit);
             while (fs.peek() != std::char_traits<char>::eof()) {
                 std::getline(fs, line);
-                point_and_polygons.emplace_back(CreatePointAndPolygonFromString(line));
+                try {
+                    point_and_polygons.emplace_back(CreatePointAndPolygonFromString(line));
+                } catch (const std::runtime_error&) {
+                    continue;
+                }
             }
         } catch (const std::ios_base::failure& e) {
             fs.close();

@@ -57,7 +57,7 @@ TEST_F(WindingNumberTest, DISABLED_CanGetPointInPolygon) {
 
 // TODO: Add more expected_winding_numbers to this test, based on results from the polygons.txt file.
 TEST_F(WindingNumberTest, CanGetWindingNumbersForPolygonsFromFile) {
-    std::vector<std::optional<int>> expected_winding_numbers = {1, -1, 1, 1, std::nullopt, 4};
+    std::vector<std::optional<int>> expected_winding_numbers = {1, -1, 1, std::nullopt, 1, 4};
     auto points_and_polygons = reader_->ReadPointsAndPolygonsFromFile(polygons_file_path_);
     ASSERT_GE(points_and_polygons.size(), expected_winding_numbers.size());
     for (size_t i = 0; i < expected_winding_numbers.size(); ++i) {
