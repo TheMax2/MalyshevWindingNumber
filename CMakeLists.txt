@@ -44,7 +44,12 @@ set(WINDING_NUMBER_TEST_SRC
 add_executable(winding_number_test ${WINDING_NUMBER_TEST_SRC})
 
 target_include_directories(winding_number_test PRIVATE ${GTEST_INC_DIR} ${GTEST})
-target_link_libraries(winding_number_test PRIVATE winding_lib)
+
+if (WIN32)
+  target_link_libraries(winding_number_test PRIVATE winding_lib)
+elseif(UNIX)
+  target_link_libraries(winding_number_test PRIVATE winding_lib pthread)
+endif()
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/test/polygons.txt ${CMAKE_CURRENT_BINARY_DIR}/polygons.txt COPYONLY)
 

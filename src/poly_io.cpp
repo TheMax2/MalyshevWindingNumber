@@ -10,6 +10,36 @@
 #include <string>
 #include <string_view>
 
+// This makes it easy and consistent to include std::filesystem, which
+// for older compilers is not always in <filesystem> or in std::filesystem
+#if defined(_WIN32)
+#    if _MSC_VER >= 1914
+#        include <filesystem>
+namespace fs = std::filesystem;
+#    else
+#        include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+#    endif
+#elif __has_include(<filesystem>)
+#    include <filesystem>
+namespace fs = std::filesystem;
+#elif __has_include(<experimental/filesystem>)
+#    include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+#elif defined(__GNUC__) && __GNUC__ <= 7
+#    include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+#elif defined(__GNUC__) && __GNUC__ >= 8
+#    include <filesystem>
+namespace fs = std::filesystem;
+#elif defined(__clang__) && __clang_major__ <= 8
+#    include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+#elif defined(__clang__) && __clang_major__ <= 10
+#    include <filesystem>
+namespace fs = std::filesystem;
+#endif
+
 namespace poly {
 namespace {
 
@@ -72,15 +102,15 @@ namespace {
 
     std::vector<std::tuple<float, float, Polygon>> DefaultPolygonReader::ReadPointsAndPolygonsFromFile(
             std::string_view filepath) {
-        std::filesystem::path path(filepath);
-        if (!std::filesystem::exists(path) || !std::filesystem::is_regular_file(path)) {
+        fs::path path(filepath);
+        if (!fs::exists(path) || !fs::is_regular_file(path)) {
             throw std::runtime_error("Provided filepath is not readable as a file: " + std::string(filepath));
         }
         std::vector<std::tuple<float, float, Polygon>> point_and_polygons;
         std::string line;
         std::ifstream fs;
         try {
-            fs = std::ifstream(filepath, std::ios::in);
+            fs = std::ifstream(path, std::ios::in);
             fs.exceptions(fs.failbit | fs.badbit);
             while (fs.peek() != std::char_traits<char>::eof()) {
                 std::getline(fs, line);
