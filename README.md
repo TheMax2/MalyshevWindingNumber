@@ -36,7 +36,7 @@ Requirements:
 The development environment makes use of the standard [CMake](https://cmake.org/) configuration process.
 
 - Install the above requirements
-- Clone the repository for the homework problem by running `git clone git@bitbucket.org:dynall/winding_number_homework.git`
+- Clone the repository for the homework problem by running `git clone https://bitbucket.org/dynall/winding_number_homework.git`
 - Create a `build` directory in the `winding_number_homework` folder at the root level
 - From the `build` directory, run `cmake ..` on the command-line, which will create either a Visual Studio solution or a set of Makefiles
 - Either open the solution and build, or run `make` from the `build` directory
