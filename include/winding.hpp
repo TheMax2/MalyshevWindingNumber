@@ -33,6 +33,9 @@ public:
     // returns std::nullopt.
     virtual std::optional<int> CalculateWindingNumber2D(float x, float y, poly::Polygon polygon) = 0;
 
+    // returns true if point (x,y) intersects with polygon
+    virtual bool PointIntersectsPolygon(float x, float y, poly::Polygon polygon) = 0;
+
     // Getters and setters for an initial set of parameters and results.
     float tolerance() const noexcept;
     void tolerance(float tolerance) noexcept;
@@ -45,7 +48,7 @@ protected:
 private:
     // Tolerance is a distance measure -- when the two points are as close, or closer than, tolerance_ apart in all
     // dimensions, then they are considered the same point.
-    float tolerance_ = 0.f;
+    float tolerance_ = 0.0001f;
 
     // An error message describing what, if anything, went wrong with the most recent call to CalculateWindingNumber().
     std::string error_message_;
